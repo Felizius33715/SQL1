@@ -1,0 +1,50 @@
+create table if not exists genre (
+    id SERIAL primary key,
+    name VARCHAR(30) not null UNIQUE 
+);
+
+create table if not exists artist (
+    id SERIAL primary key,
+    name VARCHAR(60) not null
+);
+
+create table if not exists artist_genre (
+    id SERIAL primary key,
+    artist_id INT not null references artist(id) on delete cascade,
+    genre_id INT not null references genre(id) on delete cascade,
+    unique (artist_id, genre_id)
+);
+
+create table if not exists album (
+    id SERIAL primary key,
+    name VARCHAR(60) not null,
+    release_date DATE not null
+);
+
+create table if not exists artist_album (
+    id SERIAL primary key,
+    artist_id INT not null references artist(id) on delete cascade,
+    album_id INT not null references album(id) on delete cascade,
+    unique (artist_id, album_id)
+);
+
+create table if not exists song (
+    id SERIAL primary key,
+    name VARCHAR(60) not null,
+    duration_song INTEGER not null,
+    album_id INT not null references album(id) on delete cascade
+);
+
+
+create table if not exists compilation (
+    id SERIAL primary key,
+    name VARCHAR(60) not null,
+    release_year INT not null
+);
+
+create table if not exists song_compilation (
+    id SERIAL primary key,
+    song_id INT not null references song(id) on delete cascade,
+    compilation_id INT not null references compilation(id) on delete cascade,
+    unique (song_id, compilation_id)
+);
